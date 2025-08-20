@@ -1,3 +1,4 @@
+/* Base */
 body {
   margin: 0;
   font-family: 'Quicksand', sans-serif;
@@ -6,21 +7,23 @@ body {
   text-align: center;
 }
 
+/* Header bandeau rose */
 header {
   background-color: #e4c8cf;
   height: clamp(150px, 20vw, 200px);
   position: relative;
-  overflow: visible; /* important pour éviter le rognage du demi-cercle */
+  overflow: visible; /* évite tout rognage du demi-cercle */
 }
 
+/* Demi-ellipse blanche avec logo (robuste iPad/Safari) */
 header .logo {
   position: absolute;
-  bottom: clamp(-40px, -8vw, -70px);
+  /* IMPORTANT: ordre clamp min ≤ préféré ≤ max même en négatif */
+  bottom: clamp(-70px, -8vw, -40px);
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%) translateZ(0);
   background: #fff;
 
-  /* tailles fluides */
   width: clamp(240px, 50vw, 400px);
   height: clamp(120px, 28vw, 220px);
 
@@ -29,26 +32,21 @@ header .logo {
   justify-content: center;
   padding-top: clamp(4px, 2vw, 10px);
 
-  /* forme demi-ellipse fiable */
-  -webkit-clip-path: ellipse(50% 100% at 50% 100%);
-          clip-path: ellipse(50% 100% at 50% 100%);
+  /* Demi-ellipse sans clip-path (meilleure compatibilité zoom) */
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
 
-  /* optimisation rendu zoom Safari */
-  will-change: transform;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  outline: 1px solid transparent; /* force une peinture dédiée (anti-artéfacts) */
 }
 
 header .logo img {
   max-width: clamp(180px, 60vw, 450px);
   height: auto;
+  display: block;
 }
 
-/* Fallback si clip-path indisponible */
-@supports not (clip-path: ellipse(50% 100% at 50% 100%)) {
-  header .logo {
-    border-radius: 50% 50% 0 0 / 100% 100% 0 0;
-  }
-}
-
+/* Contenu */
 main {
   margin-top: clamp(80px, 20vw, 120px);
   padding: 20px;
@@ -78,6 +76,7 @@ ul li {
   font-size: clamp(13px, 2vw, 16px);
 }
 
+/* Footer + réseaux sociaux */
 footer {
   margin-top: 40px;
   padding: 20px;
@@ -93,10 +92,19 @@ footer {
   display: inline-block;
   margin: 0 8px;
   font-size: clamp(20px, 6vw, 28px);
-  color: #e4c8cf;
-  transition: color 0.3s;
+  color: #e4aebe;          /* couleur des icônes */
+  transition: color 0.2s ease-in-out, transform 0.2s ease-in-out;
+  text-decoration: none;
 }
 
-socials a:hover {
-  color: #e4aebe;
+.socials a:hover,
+.socials a:focus-visible {
+  color: #cf8fa3;          /* survol/focus */
+  transform: translateY(-1px);
+}
+
+/* Accessibilité focus clavier */
+.socials a:focus-visible {
+  outline: 2px solid #cf8fa3;
+  outline-offset: 3px;
 }
