@@ -10,22 +10,31 @@ header {
   background-color: #e4c8cf;
   height: clamp(150px, 20vw, 200px);
   position: relative;
+  overflow: visible; /* important pour éviter le rognage du demi-cercle */
 }
 
 header .logo {
   position: absolute;
-  bottom: clamp(-40px, -8vw, -70px); /* décalage adaptatif */
+  bottom: clamp(-40px, -8vw, -70px);
   left: 50%;
   transform: translateX(-50%);
   background: #fff;
+
+  /* tailles fluides */
   width: clamp(240px, 50vw, 400px);
   height: clamp(120px, 28vw, 220px);
-  border-top-left-radius: clamp(200px, 50vw, 260px);
-  border-top-right-radius: clamp(200px, 50vw, 260px);
+
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-top: clamp(4px, 2vw, 10px); /* espace fluide en haut */
+  padding-top: clamp(4px, 2vw, 10px);
+
+  /* forme demi-ellipse fiable */
+  -webkit-clip-path: ellipse(50% 100% at 50% 100%);
+          clip-path: ellipse(50% 100% at 50% 100%);
+
+  /* optimisation rendu zoom Safari */
+  will-change: transform;
 }
 
 header .logo img {
@@ -33,8 +42,15 @@ header .logo img {
   height: auto;
 }
 
+/* Fallback si clip-path indisponible */
+@supports not (clip-path: ellipse(50% 100% at 50% 100%)) {
+  header .logo {
+    border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  }
+}
+
 main {
-  margin-top: clamp(80px, 20vw, 120px); /* ajusté pour logo plus bas/haut */
+  margin-top: clamp(80px, 20vw, 120px);
   padding: 20px;
 }
 
@@ -81,6 +97,6 @@ footer {
   transition: color 0.3s;
 }
 
-.socials a:hover {
+socials a:hover {
   color: #e4aebe;
 }
