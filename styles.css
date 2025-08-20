@@ -10,7 +10,7 @@ body {
 /* Header bandeau rose */
 header {
   background-color: #e4c8cf;
-  height: clamp(150px, 20vw, 200px);
+  height: clamp(200px, 20vw, 250px);
   position: relative;
   overflow: visible; /* évite tout rognage du demi-cercle */
 }
